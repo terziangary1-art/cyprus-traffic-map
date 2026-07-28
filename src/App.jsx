@@ -13,6 +13,7 @@ const roadworksIcon = L.divIcon({
 function App() {
 
   const [events, setEvents] = useState([]);
+const [lastUpdated, setLastUpdated] = useState(null);
 
   useEffect(() => {
 
@@ -21,8 +22,9 @@ function App() {
     const data = await getTrafficData();
 
     if (data) {
-      setEvents(data);
-    }
+  setEvents(data);
+  setLastUpdated(new Date());
+}
 
   }
 
@@ -48,8 +50,18 @@ function App() {
 
     <div>
 
-      <h1>Cyprus Live Traffic Map</h1>
+<h1>🇨🇾 Cyprus Live Roadworks Map</h1>
 
+<p>
+  🚧 Active roadworks: {events.length}
+  <br />
+
+  Last update:
+  {" "}
+  {lastUpdated
+    ? lastUpdated.toLocaleString()
+    : "Loading..."}
+</p>
 
       <MapContainer
         center={cyprusPosition}
