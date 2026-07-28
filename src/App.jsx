@@ -2,12 +2,16 @@ import L from "leaflet";
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-
+import "./App.css";
 import { getTrafficData } from "./traffic";
-const roadworksIcon = L.divIcon({
-  html: "🚧",
-  className: "",
-  iconSize: [30, 30]
+import roadworksImage from "./assets/roadworks.png";
+
+
+const roadworksIcon = L.icon({
+  iconUrl: roadworksImage,
+  iconSize: [45, 45],
+  iconAnchor: [22, 45],
+  popupAnchor: [0, -45]
 });
 
 function App() {
@@ -48,28 +52,32 @@ const [lastUpdated, setLastUpdated] = useState(null);
 
   return (
 
+    <div className="app">
+
+<header className="header">
+
+  <h1> Cyprus Live Roadworks Map</h1>
+
+  <div className="stats">
+
     <div>
+      🚧 <strong>{events.length}</strong> Active Roadworks
+    </div>
 
-<h1>🇨🇾 Cyprus Live Roadworks Map</h1>
+    <div>
+      🕒 {lastUpdated
+        ? lastUpdated.toLocaleTimeString()
+        : "Loading..."}
+    </div>
 
-<p>
-  🚧 Active roadworks: {events.length}
-  <br />
+  </div>
 
-  Last update:
-  {" "}
-  {lastUpdated
-    ? lastUpdated.toLocaleString()
-    : "Loading..."}
-</p>
+</header>
 
       <MapContainer
         center={cyprusPosition}
         zoom={9}
-        style={{
-          height: "600px",
-          width: "100%"
-        }}
+        className="map"
       >
 
         <TileLayer
