@@ -10,15 +10,15 @@ import wazeImage from "./assets/waze.png";
 
 const operatorIcon = L.icon({
   iconUrl: roadworksImage,
-  iconSize: [45, 45],
-  iconAnchor: [22, 45],
-  popupAnchor: [0, -45]
+  iconSize: [30, 30],
+  iconAnchor: [15, 30],
+  popupAnchor: [0, -30]
 });
 const wazeIcon = L.icon({
   iconUrl: wazeImage,
-  iconSize: [45, 45],
-  iconAnchor: [22, 45],
-  popupAnchor: [0, -45]
+  iconSize: [30, 30],
+  iconAnchor: [15, 30],
+  popupAnchor: [0, -30]
 });
 
 function App() {
