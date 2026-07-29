@@ -37,15 +37,21 @@ for (let i = 0; i < records.length; i++) {
   const description = record
     .getElementsByTagName("description")[0]
     ?.textContent;
+const sourceElement = record
+    .getElementsByTagName("sourceIdentification")[0];
 
+const source = sourceElement
+    ? sourceElement.textContent
+    : "Unknown";
 
   if (latitude && longitude) {
-
+console.log(source);
     events.push({
-      latitude: Number(latitude),
-      longitude: Number(longitude),
-      description: description || "No description"
-    });
+  latitude,
+  longitude,
+  description,
+  source
+});
 
   }
 }

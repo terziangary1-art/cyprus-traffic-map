@@ -5,10 +5,17 @@ import "leaflet/dist/leaflet.css";
 import "./App.css";
 import { getTrafficData } from "./traffic";
 import roadworksImage from "./assets/roadworks.png";
+import wazeImage from "./assets/waze.png";
 
 
-const roadworksIcon = L.icon({
+const operatorIcon = L.icon({
   iconUrl: roadworksImage,
+  iconSize: [45, 45],
+  iconAnchor: [22, 45],
+  popupAnchor: [0, -45]
+});
+const wazeIcon = L.icon({
+  iconUrl: wazeImage,
   iconSize: [45, 45],
   iconAnchor: [22, 45],
   popupAnchor: [0, -45]
@@ -56,7 +63,7 @@ const [lastUpdated, setLastUpdated] = useState(null);
 
 <header className="header">
 
-  <h1> Cyprus Live Roadworks Map</h1>
+  <h1>CY Cyprus Live Roadworks Map</h1>
 
   <div className="stats">
 
@@ -93,13 +100,22 @@ const [lastUpdated, setLastUpdated] = useState(null);
     event.latitude,
     event.longitude
   ]}
-  icon={roadworksIcon}
+  icon={
+  event.source === "Waze"
+    ? wazeIcon
+    : operatorIcon
+}
 >
 
             <Popup>
 
-              <b>Traffic Event</b>
-              <br />
+              <b>
+  {event.source === "Waze"
+    ? "📍 Waze Report"
+    : "🚧 Official Roadworks"}
+</b>
+<br />
+
 
               {event.description}
 
