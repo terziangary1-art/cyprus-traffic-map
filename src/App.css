@@ -42,3 +42,48 @@ body,
   height: 100%;
   width: 100%;
 }
+.sensor-table {
+
+  position: absolute;
+
+  top: 130px;
+
+  left: 20px;
+
+  z-index: 1000;
+
+  background: white;
+
+  padding: 15px;
+
+  max-height: 400px;
+
+  overflow-y: auto;
+
+  border-radius: 8px;
+
+}
+
+
+.sensor-table table {
+
+  border-collapse: collapse;
+
+}
+
+
+.sensor-table th,
+.sensor-table td {
+
+  padding: 8px;
+
+  border-bottom: 1px solid #ddd;
+
+}
+
+
+.sensor-table th {
+
+  text-align: left;
+
+}
