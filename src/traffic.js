@@ -2,8 +2,12 @@ import axios from "axios";
 
 const trafficURL =
   "https://silent-dawn-29f1.terzian-gary1.workers.dev/";
+
 const bluetoothURL =
   "https://flat-cloud-84bd.terzian-gary1.workers.dev/";
+
+const wimURL =
+  "https://super-band-2161.terzian-gary1.workers.dev/";
 
 export async function getTrafficData() {
   try {
@@ -324,5 +328,124 @@ export async function getBluetoothSensors() {
     return [];
 
   }
+
+}
+export async function getWIMSensors() {
+
+  try {
+
+    const response = await axios.get(wimURL);
+
+
+    const parser = new DOMParser();
+
+
+    const xml = parser.parseFromString(
+      response.data,
+      "text/xml"
+    );
+
+
+
+    const measurementSites = xml.getElementsByTagNameNS(
+      "*",
+      "measurementSiteRecord"
+    );
+
+
+
+    const sensors = [];
+
+
+
+    for (let i = 0; i < measurementSites.length; i++) {
+
+
+      const site = measurementSites[i];
+
+
+
+      const id = site
+        .getElementsByTagNameNS(
+          "*",
+          "identifier"
+        )[0]
+        ?.textContent;
+
+
+
+      const name = site
+        .getElementsByTagNameNS(
+          "*",
+          "value"
+        )[0]
+        ?.textContent;
+
+
+
+      const latitude = site
+        .getElementsByTagNameNS(
+          "*",
+          "latitude"
+        )[0]
+        ?.textContent;
+
+
+
+      const longitude = site
+        .getElementsByTagNameNS(
+          "*",
+          "longitude"
+        )[0]
+        ?.textContent;
+
+
+
+      sensors.push({
+
+        id,
+
+        name,
+
+        latitude,
+
+        longitude
+
+      });
+
+
+    }
+
+
+
+    console.log(
+      "WIM sensors found:",
+      sensors.length
+    );
+
+
+    console.log(
+      sensors
+    );
+
+
+    return sensors;
+
+
+
+  } catch(error) {
+
+
+    console.error(
+      "Error loading WIM sensors:",
+      error
+    );
+
+
+    return [];
+
+
+  }
+
 
 }

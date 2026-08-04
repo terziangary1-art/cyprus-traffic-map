@@ -7,12 +7,14 @@ import "./App.css";
 import {
   getTrafficData,
   getBluetoothSensorCount,
-  getBluetoothSensors
+  getBluetoothSensors,
+  getWIMSensors
 } from "./traffic";
 
 import roadworksImage from "./assets/roadworks.png";
 import wazeImage from "./assets/waze.png";
 import bluetoothImage from "./assets/bluetooth.png";
+import wimImage from "./assets/wim.png";
 
 
 const operatorIcon = L.icon({
@@ -34,26 +36,46 @@ const wazeIcon = L.icon({
 const bluetoothIcon = L.icon({
   iconUrl: bluetoothImage,
   iconSize: [18, 18],
-  iconAnchor: [15, 30],
-  popupAnchor: [0, -30]
+  iconAnchor: [9, 18],
+  popupAnchor: [0, -20]
 });
+
+
+const wimIcon = L.icon({
+  iconUrl: wimImage,
+  iconSize: [22, 22],
+  iconAnchor: [11, 22],
+  popupAnchor: [0, -22]
+});
+
 
 
 function App() {
 
+
   const [events, setEvents] = useState([]);
   const [lastUpdated, setLastUpdated] = useState(null);
+
 
   const [bluetoothSensors, setBluetoothSensors] = useState(0);
   const [sensorList, setSensorList] = useState([]);
 
+
   const [showBluetooth, setShowBluetooth] = useState(false);
-const [showSensorTable, setShowSensorTable] = useState(false);
+  const [showSensorTable, setShowSensorTable] = useState(false);
+
+
+  const [showWIMSensors, setShowWIMSensors] = useState(false);
+  const [showWIMTable, setShowWIMTable] = useState(false);
+  const [wimSensors, setWimSensors] = useState([]);
+
+
 
   useEffect(() => {
 
 
     async function loadTraffic() {
+
 
       const data = await getTrafficData();
 
@@ -61,8 +83,14 @@ const [showSensorTable, setShowSensorTable] = useState(false);
 
       const sensorsList = await getBluetoothSensors();
 
+      const wimList = await getWIMSensors();
+
+
 
       setSensorList(sensorsList);
+
+      setWimSensors(wimList);
+
 
 
       if (data) {
@@ -75,6 +103,7 @@ const [showSensorTable, setShowSensorTable] = useState(false);
 
 
       setBluetoothSensors(sensors);
+
 
     }
 
@@ -96,10 +125,13 @@ const [showSensorTable, setShowSensorTable] = useState(false);
 
 
 
+
   const cyprusPosition = [35.1264, 33.4299];
 
 
+
   return (
+
 
     <div className="app">
 
@@ -110,45 +142,6 @@ const [showSensorTable, setShowSensorTable] = useState(false);
         <h1>
           CY Cyprus Live Roadworks Map
         </h1>
-
-
-        <div className="controls">
-
-  <label>
-
-    <input
-      type="checkbox"
-      checked={showBluetooth}
-      onChange={(e) =>
-        setShowBluetooth(e.target.checked)
-      }
-    />
-
-    📡 Show Bluetooth Sensors
-
-  </label>
-
-
-  <br />
-
-
-  <label>
-
-    <input
-      type="checkbox"
-      checked={showSensorTable}
-      onChange={(e) =>
-        setShowSensorTable(e.target.checked)
-      }
-    />
-
-    📋 Show Sensor List
-
-  </label>
-
-
-</div>
-
 
 
         <div className="stats">
@@ -165,6 +158,11 @@ const [showSensorTable, setShowSensorTable] = useState(false);
 
 
           <div>
+            ⚖️ <strong>{wimSensors.length}</strong> WIM Sensors
+          </div>
+
+
+          <div>
             🕒 {
               lastUpdated
               ? lastUpdated.toLocaleTimeString()
@@ -177,56 +175,179 @@ const [showSensorTable, setShowSensorTable] = useState(false);
 
 
       </header>
-{showSensorTable && (
-
-  <div className="sensor-table">
-
-    <h3>
-      📡 Bluetooth Sensors ({sensorList.length})
-    </h3>
 
 
-    <table>
 
-      <thead>
+      {/* FLOATING MAP CONTROLS */}
 
-        <tr>
-          <th>Sensor ID</th>
-          <th>Location</th>
-        </tr>
-
-      </thead>
+      <div className="map-controls">
 
 
-      <tbody>
+        <label>
+
+          <input
+            type="checkbox"
+            checked={showBluetooth}
+            onChange={(e)=>setShowBluetooth(e.target.checked)}
+          />
+
+          📡 Show Bluetooth Sensors
+
+        </label>
 
 
-        {sensorList.map((sensor, index) => (
-
-          <tr key={index}>
-
-            <td>
-              {sensor.id}
-            </td>
-
-            <td>
-              {sensor.name}
-            </td>
-
-          </tr>
-
-        ))}
+        <br/>
 
 
-      </tbody>
+        <label>
+
+          <input
+            type="checkbox"
+            checked={showSensorTable}
+            onChange={(e)=>setShowSensorTable(e.target.checked)}
+          />
+
+          📋 Bluetooth List
+
+        </label>
 
 
-    </table>
+        <br/>
 
 
-  </div>
+        <label>
 
-)}
+          <input
+            type="checkbox"
+            checked={showWIMSensors}
+            onChange={(e)=>setShowWIMSensors(e.target.checked)}
+          />
+
+          ⚖️ Show WIM Sensors
+
+        </label>
+
+
+        <br/>
+
+
+        <label>
+
+          <input
+            type="checkbox"
+            checked={showWIMTable}
+            onChange={(e)=>setShowWIMTable(e.target.checked)}
+          />
+
+          ⚖️ WIM List
+
+        </label>
+
+
+      </div>
+
+
+
+
+
+      {showSensorTable && (
+
+        <div className="sensor-table">
+
+          <h3>
+            📡 Bluetooth Sensors ({sensorList.length})
+          </h3>
+
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>ID</th>
+                <th>Location</th>
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            {sensorList.map((sensor,index)=>(
+
+              <tr key={index}>
+
+                <td>{sensor.id}</td>
+
+                <td>{sensor.name}</td>
+
+              </tr>
+
+            ))}
+
+            </tbody>
+
+
+          </table>
+
+
+        </div>
+
+      )}
+
+
+
+
+
+
+      {showWIMTable && (
+
+        <div className="sensor-table">
+
+          <h3>
+            ⚖️ WIM Sensors ({wimSensors.length})
+          </h3>
+
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>ID</th>
+                <th>Location</th>
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            {wimSensors.map((sensor,index)=>(
+
+              <tr key={index}>
+
+                <td>{sensor.id}</td>
+
+                <td>{sensor.name}</td>
+
+              </tr>
+
+            ))}
+
+            </tbody>
+
+
+          </table>
+
+
+        </div>
+
+      )}
+
+
+
+
 
 
       <MapContainer
@@ -237,16 +358,12 @@ const [showSensorTable, setShowSensorTable] = useState(false);
 
 
         <TileLayer
-
           url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-
         />
 
 
 
-        {/* ROADWORKS + WAZE MARKERS */}
-
-        {events.map((event, index) => (
+        {events.map((event,index)=>(
 
           <Marker
 
@@ -258,7 +375,7 @@ const [showSensorTable, setShowSensorTable] = useState(false);
             ]}
 
             icon={
-              event.source === "Waze"
+              event.source==="Waze"
               ? wazeIcon
               : operatorIcon
             }
@@ -267,22 +384,58 @@ const [showSensorTable, setShowSensorTable] = useState(false);
 
             <Popup>
 
-
               <b>
-
                 {
-                  event.source === "Waze"
+                  event.source==="Waze"
                   ? "📍 Waze Report"
                   : "🚧 Official Roadworks"
                 }
-
               </b>
 
-
-              <br />
-
+              <br/>
 
               {event.description}
+
+            </Popup>
+
+
+          </Marker>
+
+        ))}
+
+
+
+
+
+
+        {showBluetooth && sensorList.map((sensor,index)=>(
+
+          <Marker
+
+            key={"bluetooth-"+index}
+
+            position={[
+              sensor.latitude,
+              sensor.longitude
+            ]}
+
+            icon={bluetoothIcon}
+
+          >
+
+            <Popup>
+
+              <b>
+                📡 Bluetooth Sensor
+              </b>
+
+              <br/>
+
+              ID: {sensor.id}
+
+              <br/>
+
+              {sensor.name}
 
 
             </Popup>
@@ -295,44 +448,36 @@ const [showSensorTable, setShowSensorTable] = useState(false);
 
 
 
-        {/* BLUETOOTH SENSOR MARKERS */}
 
-        {showBluetooth && sensorList.map((sensor, index) => (
 
+        {showWIMSensors && wimSensors.map((sensor,index)=>(
 
           <Marker
 
-            key={"sensor-" + index}
+            key={"wim-"+index}
 
             position={[
               sensor.latitude,
               sensor.longitude
             ]}
 
-            icon={bluetoothIcon}
+            icon={wimIcon}
 
           >
 
-
             <Popup>
 
-
               <b>
-                📡 Bluetooth Sensor
+                ⚖️ WIM Sensor
               </b>
 
-
-              <br />
-
+              <br/>
 
               ID: {sensor.id}
 
+              <br/>
 
-              <br />
-
-
-              Location: {sensor.name}
-
+              {sensor.name}
 
             </Popup>
 
@@ -349,6 +494,7 @@ const [showSensorTable, setShowSensorTable] = useState(false);
 
 
     </div>
+
 
   );
 
