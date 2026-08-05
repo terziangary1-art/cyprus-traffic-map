@@ -384,19 +384,63 @@ function App() {
 
             <Popup>
 
-              <b>
-                {
-                  event.source==="Waze"
-                  ? "📍 Waze Report"
-                  : "🚧 Official Roadworks"
-                }
-              </b>
+  <b>
+    {
+      event.source==="Waze"
+      ? "📍 Waze Report"
+      : "🚧 Official Roadworks"
+    }
+  </b>
 
-              <br/>
+  <br/><br/>
 
-              {event.description}
+  <b>Source:</b> {event.source}
 
-            </Popup>
+  <br/>
+
+  <b>Severity:</b> {event.severity}
+
+  <br/><br/>
+
+  <b>Description:</b>
+
+  <br/>
+
+  {event.description}
+
+  <br/><br/>
+
+  <b>Start:</b>
+
+  <br/>
+
+  {event.overallStartTime || "Not available"}
+
+  <br/><br/>
+
+  <b>End:</b>
+
+  <br/>
+
+  {event.overallEndTime || "Not available"}
+
+  <br/><br/>
+
+  <b>Road Work Type:</b>
+
+  <br/>
+
+  {event.roadMaintenanceType || "Not available"}
+
+  <br/><br/>
+
+  <b>Subtype:</b>
+
+  <br/>
+
+  {event.subtype || "Not available"}
+
+</Popup>
 
 
           </Marker>

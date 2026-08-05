@@ -51,13 +51,47 @@ const source = sourceElement
     ? sourceElement.textContent
     : "Unknown";
 
+
+    const severity = record
+  .getElementsByTagNameNS("*", "severity")[0]
+  ?.textContent;
+
+const overallStartTime = record
+  .getElementsByTagNameNS("*", "overallStartTime")[0]
+  ?.textContent;
+
+const overallEndTime = record
+  .getElementsByTagNameNS("*", "overallEndTime")[0]
+  ?.textContent;
+
+const subtype = record
+  .getElementsByTagName("subtype")[0]
+  ?.textContent;
+
+const roadMaintenanceType = record
+  .getElementsByTagNameNS("*", "roadMaintenanceType")[0]
+  ?.textContent;
+
+const recordType =
+  record.getAttribute("xsi:type") ||
+  record.getAttributeNS(
+    "http://www.w3.org/2001/XMLSchema-instance",
+    "type"
+  );
+
   if (latitude && longitude) {
 console.log(source);
-    events.push({
+   events.push({
   latitude,
   longitude,
   description,
-  source
+  source,
+  severity,
+  overallStartTime,
+  overallEndTime,
+  subtype,
+  roadMaintenanceType,
+  recordType
 });
 
   }
