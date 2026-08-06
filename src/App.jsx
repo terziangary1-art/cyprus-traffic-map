@@ -440,6 +440,48 @@ function App() {
 
   {event.subtype || "Not available"}
 
+ <br/><br/>
+
+  <b>Road Work Type:</b>
+
+  <br/>
+
+  {event.roadMaintenanceType || "Not available"}
+
+  <br/><br/>
+
+  <b>Subtype:</b>
+
+ <br/><br/>
+
+<b>Bearing:</b>
+
+<br/>
+
+{event.bearing || "Not available"}
+
+<br/><br/>
+
+<b>Original Number of Lanes:</b>
+<br/>
+{event.originalNumberOfLanes || "Not available"}
+
+<br/><br/>
+
+<b>Affected Lane:</b>
+<br/>
+{event.laneNumber || "Not available"}
+
+<br/><br/>
+
+<b>Affected Lanes:</b>
+<br/>
+{event.affectedLanes || "Not available"}
+
+<br/><br/>
+
+
+
 </Popup>
 
 

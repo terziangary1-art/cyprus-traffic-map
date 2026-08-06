@@ -72,6 +72,25 @@ const roadMaintenanceType = record
   .getElementsByTagNameNS("*", "roadMaintenanceType")[0]
   ?.textContent;
 
+  const bearing = record
+  .getElementsByTagNameNS("*", "bearing")[0]
+  ?.textContent;
+
+
+  const originalNumberOfLanes = record
+  .getElementsByTagNameNS("*", "originalNumberOfLanes")[0]
+  ?.textContent;
+
+const laneNumber = record
+  .getElementsByTagNameNS("*", "laneNumber")[0]
+  ?.textContent;
+
+const affectedLanes = record
+  .getElementsByTagNameNS("*", "affectedLanes")[0]
+  ?.textContent;
+
+
+
 const recordType =
   record.getAttribute("xsi:type") ||
   record.getAttributeNS(
@@ -91,6 +110,10 @@ console.log(source);
   overallEndTime,
   subtype,
   roadMaintenanceType,
+  bearing,
+  originalNumberOfLanes,
+laneNumber,
+affectedLanes,
   recordType
 });
 
